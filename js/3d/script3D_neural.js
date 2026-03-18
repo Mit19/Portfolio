@@ -36,7 +36,7 @@
   /* ----------------------------------------------------------
      Scene & Camera
      ---------------------------------------------------------- */
-  const scene  = new THREE.Scene();
+  const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -48,25 +48,25 @@
   /* ----------------------------------------------------------
      Constants
      ---------------------------------------------------------- */
-  const NODE_COUNT        = 60;
-  const BOUND             = 25;          // ±25 on each axis
+  const NODE_COUNT = 60;
+  const BOUND = 25;          // ±25 on each axis
   const CONNECT_THRESHOLD = 12;          // units
-  const MAX_CONNECTIONS   = NODE_COUNT * (NODE_COUNT - 1) / 2; // worst case
-  const COLOR_CYAN        = new THREE.Color(0x00e5ff);
-  const COLOR_PURPLE      = new THREE.Color(0x8b5cf6);
+  const MAX_CONNECTIONS = NODE_COUNT * (NODE_COUNT - 1) / 2; // worst case
+  const COLOR_CYAN = new THREE.Color(0x00e5ff);
+  const COLOR_PURPLE = new THREE.Color(0x8b5cf6);
 
   /* ----------------------------------------------------------
      Neural Nodes
      ---------------------------------------------------------- */
   const nodeGeo = new THREE.OctahedronGeometry(0.3, 0);
 
-  const nodes      = [];   // { mesh, velocity }
+  const nodes = [];   // { mesh, velocity }
   const nodePositions = [];
 
   for (let i = 0; i < NODE_COUNT; i++) {
     const color = (i % 2 === 0) ? COLOR_CYAN : COLOR_PURPLE;
 
-    const mat  = new THREE.MeshBasicMaterial({ color, wireframe: true });
+    const mat = new THREE.MeshBasicMaterial({ color, wireframe: true });
     const mesh = new THREE.Mesh(nodeGeo, mat);
 
     mesh.position.set(
@@ -139,13 +139,13 @@
   /* ----------------------------------------------------------
      Mouse Parallax
      ---------------------------------------------------------- */
-  const mouse     = { x: 0, y: 0 };
+  const mouse = { x: 0, y: 0 };
   const camTarget = { x: 0, y: 0 };
 
   if (!prefersReducedMotion) {
     window.addEventListener('mousemove', (e) => {
-      mouse.x = (e.clientX / window.innerWidth  - 0.5) * 2;
-      mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
+      mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
+      mouse.y = (e.clientY / window.innerHeight - 0.5) * 20;
     }, { passive: true });
   }
 
@@ -153,8 +153,8 @@
      Update Connection Lines
      ---------------------------------------------------------- */
   function updateLines() {
-    let idx    = 0;   // index into linePositions (floats)
-    let count  = 0;   // number of vertices written
+    let idx = 0;   // index into linePositions (floats)
+    let count = 0;   // number of vertices written
 
     const threshSq = CONNECT_THRESHOLD * CONNECT_THRESHOLD;
 

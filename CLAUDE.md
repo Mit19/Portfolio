@@ -4,8 +4,11 @@
 Single-page personal portfolio website for Souhardya Biswas (AI & Robotics Engineer). Static HTML/CSS/JS with zero dependencies.
 
 ## Tech Stack
-- HTML5, CSS3 (custom properties, grid, flexbox), vanilla JavaScript
-- No frameworks, no build tools, no CDN dependencies
+- HTML5, CSS3 (custom properties, grid, flexbox, backdrop-filter), vanilla JavaScript
+- Three.js r160 (CDN) for 3D background effects
+- Google Fonts: Space Grotesk, Fira Code
+- EmailJS (CDN) for contact form
+- No frameworks, no build tools
 
 ## File Structure
 - `index.html` — Single page with all sections
@@ -23,7 +26,7 @@ Single-page personal portfolio website for Souhardya Biswas (AI & Robotics Engin
 - `prefers-reduced-motion` respected
 
 ## Conventions
-- No external dependencies or CDNs
+- CDN dependencies allowed for: Three.js, Google Fonts, EmailJS only
 - Inline SVGs for social icons
 - Semantic HTML5 elements
 - BEM-like CSS class naming

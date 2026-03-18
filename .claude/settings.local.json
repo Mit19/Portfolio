@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Supriya Gope/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.5/**)",
+      "Bash(bash scripts/start-server.sh --project-dir \"E:/Souhardya-Portfolio\")",
+      "Bash(ls \"E:/Souhardya-Portfolio/.superpowers/brainstorm/\"*/)",
+      "Bash(ls /tmp/superpowers-brainstorm-*)",
+      "Bash(bash \"C:/Users/Supriya Gope/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.5/skills/brainstorming/scripts/start-server.sh\" --project-dir \"E:/Souhardya-Portfolio\")",
+      "Bash(bash \"C:/Users/Supriya Gope/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.5/skills/brainstorming/scripts/stop-server.sh\" \"E:/Souhardya-Portfolio/.superpowers/brainstorm/818-1773824185\")"
+    ]
+  }
+}

@@ -12,73 +12,69 @@ document.addEventListener('DOMContentLoaded', () => {
      ---------------------------------------------------------- */
   const nav = document.querySelector('nav');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-  }, { passive: true });
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    }, { passive: true });
+  }
 
   /* ----------------------------------------------------------
      2. Hamburger Toggle
      ---------------------------------------------------------- */
-  const hamburger = document.querySelector('.hamburger');
-  const navLinks  = document.querySelectorAll('.nav-links a');
+  const hamburger    = document.querySelector('.hamburger');
+  const mobileMenu   = document.querySelector('.mobile-menu');
+  const mobileLinks  = document.querySelectorAll('.mobile-menu a');
 
-  hamburger.addEventListener('click', () => {
-    document.body.classList.toggle('nav-open');
-  });
+  if (hamburger) {
+    hamburger.addEventListener('click', () => {
+      document.body.classList.toggle('nav-open');
+    });
+  }
 
-  // Close menu when a nav link is clicked
-  navLinks.forEach(link => {
+  // Close on mobile menu link click
+  mobileLinks.forEach(link => {
     link.addEventListener('click', () => {
       document.body.classList.remove('nav-open');
     });
   });
 
-  // Close menu when clicking outside nav
+  // Close on click outside nav and mobile menu
   document.addEventListener('click', (e) => {
     if (
       document.body.classList.contains('nav-open') &&
-      !e.target.closest('nav')
+      !e.target.closest('nav') &&
+      !e.target.closest('.mobile-menu')
     ) {
       document.body.classList.remove('nav-open');
     }
   });
 
   /* ----------------------------------------------------------
-     3. Smooth Scroll for Nav Links
+     3. Smooth Scroll
      ---------------------------------------------------------- */
-  navLinks.forEach(link => {
+  const smoothScrollTargets = document.querySelectorAll(
+    '.nav-links a, .mobile-menu a, .cta-buttons a'
+  );
+
+  smoothScrollTargets.forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
 
-      e.preventDefault();
       const target = document.querySelector(href);
       if (!target) return;
 
-      target.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
-
-  // Also handle hero CTA buttons that link to sections
-  document.querySelectorAll('.cta-buttons a').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const href = btn.getAttribute('href');
-      if (!href || !href.startsWith('#')) return;
-
       e.preventDefault();
-      const target = document.querySelector(href);
-      if (!target) return;
-
       target.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
   /* ----------------------------------------------------------
-     4. Typing Effect for Hero Tagline
+     4. Typing Effect
      ---------------------------------------------------------- */
   const typingText = document.querySelector('.typing-text');
   const textToType = 'AI & Robotics Engineer';
@@ -94,18 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
         charIndex++;
         if (charIndex >= textToType.length) {
           clearInterval(typeInterval);
+          // Cursor keeps blinking — handled by CSS
         }
       }, 80);
     }
   }
 
   /* ----------------------------------------------------------
-     5. Intersection Observer for Scroll Fade-In
+     5. Scroll Fade-In
      ---------------------------------------------------------- */
   const fadeEls = document.querySelectorAll('.fade-in');
 
   if (prefersReducedMotion) {
-    // Show everything immediately
     fadeEls.forEach(el => el.classList.add('visible'));
   } else {
     const fadeObserver = new IntersectionObserver(
@@ -126,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ----------------------------------------------------------
      6. Active Nav Link Highlighting
      ---------------------------------------------------------- */
-  const sections = document.querySelectorAll('section[id]');
+  const sections  = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
 
   const sectionObserver = new IntersectionObserver(
     (entries) => {
@@ -146,5 +143,128 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   sections.forEach(section => sectionObserver.observe(section));
+
+  /* ----------------------------------------------------------
+     7. Floating Particles
+     ---------------------------------------------------------- */
+  if (!prefersReducedMotion) {
+    const particlesContainer = document.querySelector('.particles-container');
+
+    if (particlesContainer) {
+      const PARTICLE_COUNT = 28;
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const particle = document.createElement('span');
+        particle.classList.add('particle');
+
+        const size     = (Math.random() * 2.5 + 1).toFixed(2);   // 1 – 3.5 px
+        const duration = (Math.random() * 18 + 12).toFixed(2);   // 12 – 30 s
+        const delay    = -(Math.random() * 30).toFixed(2);        // 0 – -30 s
+        const left     = (Math.random() * 100).toFixed(2);        // 0 – 100 %
+
+        particle.style.width           = `${size}px`;
+        particle.style.height          = `${size}px`;
+        particle.style.left            = `${left}%`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay   = `${delay}s`;
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+  }
+
+  /* ----------------------------------------------------------
+     8. EmailJS Contact Form
+     ---------------------------------------------------------- */
+  // Replace the values below with your own EmailJS credentials
+  const SERVICE_ID  = 'YOUR_SERVICE_ID';   // Replace with your EmailJS service ID
+  const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // Replace with your EmailJS template ID
+  const USER_ID     = 'YOUR_USER_ID';      // Replace with your EmailJS public key
+
+  // Initialize EmailJS (only if loaded)
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init(USER_ID);
+  }
+
+  const contactForm  = document.getElementById('contact-form');
+  const submitBtn    = contactForm
+    ? contactForm.querySelector('.btn-submit')
+    : null;
+
+  if (contactForm && submitBtn) {
+    const originalBtnText = submitBtn.textContent;
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nameField    = contactForm.elements['from_name'];
+      const emailField   = contactForm.elements['from_email'];
+      const messageField = contactForm.elements['message'];
+
+      const name    = nameField    ? nameField.value.trim()    : '';
+      const email   = emailField   ? emailField.value.trim()   : '';
+      const message = messageField ? messageField.value.trim() : '';
+
+      // Basic validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!name || !email || !emailRegex.test(email) || !message) {
+        submitBtn.classList.add('shake');
+        setTimeout(() => submitBtn.classList.remove('shake'), 500);
+        return;
+      }
+
+      // Check if EmailJS is available and IDs are not placeholders
+      const hasRealIds =
+        SERVICE_ID  !== 'YOUR_SERVICE_ID'  &&
+        TEMPLATE_ID !== 'YOUR_TEMPLATE_ID' &&
+        USER_ID     !== 'YOUR_USER_ID';
+
+      if (typeof emailjs === 'undefined' || !hasRealIds) {
+        // Fallback: open mailto link
+        console.warn(
+          'EmailJS is not loaded or placeholder IDs are still in use. ' +
+          'Falling back to mailto link. ' +
+          'Replace SERVICE_ID, TEMPLATE_ID, and USER_ID in js/script.js.'
+        );
+
+        const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+        const body    = encodeURIComponent(message);
+        window.location.href =
+          `mailto:souhardyabiswas02@gmail.com?subject=${subject}&body=${body}`;
+        return;
+      }
+
+      // Send via EmailJS
+      submitBtn.disabled    = true;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.classList.add('sending');
+
+      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, contactForm)
+        .then(() => {
+          submitBtn.classList.remove('sending');
+          submitBtn.classList.add('success');
+          submitBtn.textContent = 'Message Sent!';
+        })
+        .catch(() => {
+          submitBtn.classList.remove('sending');
+          submitBtn.classList.add('error');
+          submitBtn.textContent = 'Failed to send';
+        })
+        .finally(() => {
+          setTimeout(() => {
+            submitBtn.disabled    = false;
+            submitBtn.textContent = originalBtnText;
+            submitBtn.classList.remove('success', 'error', 'sending');
+          }, 3500);
+        });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     9. Pause Three.js on reduced motion
+     ---------------------------------------------------------- */
+  if (prefersReducedMotion && window.__threeAnimationId) {
+    cancelAnimationFrame(window.__threeAnimationId);
+  }
 
 });

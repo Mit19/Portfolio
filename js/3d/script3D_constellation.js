@@ -13,6 +13,7 @@
 
   // ── Canvas & renderer ────────────────────────────────────────────────────
   const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
 
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,

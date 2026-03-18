@@ -3,6 +3,7 @@
    ========================================================================== */
 
 :root {
+    color-scheme: dark;
     --bg-deep: #050510;
     --bg-card: #0a0a1a;
     --accent-cyan: #00e5ff;
@@ -1194,6 +1195,7 @@ footer::before {
     .mobile-menu { display: flex; }
 
     .nav-links { display: none; }
+    .nav-cta { display: none; }
 
     .skills-grid { grid-template-columns: 1fr; }
 

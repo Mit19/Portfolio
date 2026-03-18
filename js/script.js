@@ -244,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
           submitBtn.classList.remove('sending');
           submitBtn.classList.add('success');
           submitBtn.textContent = 'Message Sent!';
+          contactForm.reset();
         })
         .catch(() => {
           submitBtn.classList.remove('sending');
